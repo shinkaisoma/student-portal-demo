@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Student Portal Advanced</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f5f7}
+.hidden{display:none}
+.top{background:#1f6fd6;color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.hero{background:#167a78;color:#fff;padding:20px}
+.card{background:#fff;margin:12px;padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+input{width:100%;padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:8px}
+button{padding:10px 16px;border:none;border-radius:8px;background:#1f6fd6;color:#fff;cursor:pointer}
+.menu{position:fixed;left:-260px;top:0;width:250px;height:100%;background:#fff;box-shadow:2px 0 12px rgba(0,0,0,.2);transition:.3s;padding:20px;z-index:10}
+.menu.open{left:0}
+.menu p{padding:10px 0;border-bottom:1px solid #eee}
+.notice{padding:10px;border-bottom:1px solid #eee}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:#fafafa;border:1px solid #ddd;padding:14px;border-radius:10px;text-align:center}
+.badge{background:#e8f2ff;color:#1f6fd6;padding:4px 8px;border-radius:999px;font-size:12px}
+</style>
+</head>
+<body>
+
+<div id="loginPage">
+  <div class="top"><b>Student Portal</b></div>
+  <div class="card">
+    <h2>ログイン</h2>
+    <p>ID: 20265843 / PW: nkc2026</p>
+    <input id="studentId" placeholder="学籍番号">
+    <input id="password" type="password" placeholder="パスワード">
+    <button onclick="doLogin()">ログイン</button>
+    <p id="msg"></p>
+  </div>
+</div>
+
+<div id="portalPage" class="hidden">
+  <div id="menu" class="menu">
+    <h3>メニュー</h3>
+    <p onclick="showPage('home')">ホーム</p>
+    <p onclick="showPage('notice')">お知らせ</p>
+    <p onclick="showPage('scholarship')">奨学金</p>
+    <p onclick="showPage('job')">企業説明会</p>
+    <p onclick="logout()">ログアウト</p>
+  </div>
+
+  <div class="top">
+    <span onclick="toggleMenu()">☰</span>
+    <b>NKC学生ポータル</b>
+    <span>🔔</span>
+  </div>
+
+  <div id="home">
+    <div class="hero">
+      <h1>学生ポータルサイト</h1>
+      <p>在校生向け情報ポータル</p>
+    </div>
+
+    <div class="card">
+      <h3>学生情報</h3>
+      <span class="badge">ログイン中</span>
+      <p><b>CS1A 前田 将希</b></p>
+      <p>学籍番号: 20265843</p>
+    </div>
+
+    <div class="card">
+      <h3>クイックアクセス</h3>
+      <div class="grid">
+        <div class="tile">2026卒</div>
+        <div class="tile">2027卒</div>
+        <div class="tile">2028卒</div>
+        <div class="tile">奨学金</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="notice" class="hidden">
+    <div class="card">
+      <h2>お知らせ</h2>
+      <div class="notice">2026/02/11 企業説明会のお知らせ</div>
+      <div class="notice">2026/02/09 就職支援セミナー</div>
+      <div class="notice">2026/02/01 奨学金受付開始</div>
+    </div>
+  </div>
+
+  <div id="scholarship" class="hidden">
+    <div class="card">
+      <h2>奨学金情報</h2>
+      <p>日本学生支援機構</p>
+      <p>スカラネット</p>
+      <p>奨学金振込日カレンダー</p>
+    </div>
+  </div>
+
+  <div id="job" class="hidden">
+    <div class="card">
+      <h2>企業説明会</h2>
+      <p>2026/02/11 サンプル企業説明会</p>
+      <p>2026/02/09 IT企業説明会</p>
+      <p>2026/01/28 就職相談会</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function doLogin(){
+ const sid=document.getElementById('studentId').value.trim();
+ const pw=document.getElementById('password').value;
+
+ if(sid==='20265843' && pw==='nkc2026'){
+   localStorage.setItem('portalLogin','true');
+   document.getElementById('loginPage').classList.add('hidden');
+   document.getElementById('portalPage').classList.remove('hidden');
+ }else{
+   document.getElementById('msg').innerText='IDまたはパスワードが違います';
+ }
+}
+
+function toggleMenu(){
+ document.getElementById('menu').classList.toggle('open');
+}
+
+function showPage(page){
+ ['home','notice','scholarship','job'].forEach(p=>{
+   document.getElementById(p).classList.add('hidden');
+ });
+ document.getElementById(page).classList.remove('hidden');
+ document.getElementById('menu').classList.remove('open');
+}
+
+function logout(){
+ localStorage.removeItem('portalLogin');
+ location.reload();
+}
+
+window.onload=function(){
+ if(localStorage.getItem('portalLogin')==='true'){
+   document.getElementById('loginPage').classList.add('hidden');
+   document.getElementById('portalPage').classList.remove('hidden');
+ }
+}
+</script>
+</body>
+</html>
